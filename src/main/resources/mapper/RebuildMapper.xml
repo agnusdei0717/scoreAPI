@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.bofa.payment.score.dao.RebuildMyBatisDao">
-    <resultMap id="BaseResultMap" type="com.bofa.payment.score.pojo.Rebuild">
+<mapper namespace="com.bofa.payment.score.scoreAPI.RebuildMyBatisDao">
+    <resultMap id="BaseResultMap" type="com.bofa.payment.scoreAPI.pojo.Rebuild">
         <id column="ID" jdbcType="INTEGER" property="id" />
         <result column="NAME" jdbcType="VARCHAR" property="name" />
         <result column="RECEIVE_DATE" jdbcType="DATE" property="receiveDate" />

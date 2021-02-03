@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.bofa.payment.score.dao.ScoreMybatisDao">
-    <select id="getScoreByYearAndMonthAndAgent" parameterType="Integer" resultType="com.bofa.payment.score.pojo.Score">
+<mapper namespace="com.bofa.payment.scoreAPI.dao.ScoreMybatisDao">
+    <select id="getScoreByYearAndMonthAndAgent" parameterType="Integer" resultType="com.bofa.payment.scoreAPI.pojo.Score">
         select * from (
             /**
             支付新開發
@@ -107,7 +107,7 @@
             );
     </select>
 
-    <select id="getPoint" parameterType="Integer" resultType="com.bofa.payment.score.pojo.AgentPoint">
+    <select id="getPoint" parameterType="Integer" resultType="com.bofa.payment.scoreAPI.pojo.AgentPoint">
         select
             score1
             ,score2
@@ -122,7 +122,7 @@
             );
     </select>
 
-    <select id="getScoreByYearAndMonthForQA" parameterType="Integer" resultType="com.bofa.payment.score.pojo.Score">
+    <select id="getScoreByYearAndMonthForQA" parameterType="Integer" resultType="com.bofa.payment.scoreAPI.pojo.Score">
         select * from (
                           /**
                           支付新開發

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.bofa.payment.score.dao.AgentMyBatisDao">
+<mapper namespace="com.bofa.payment.scoreAPI.dao.AgentMyBatisDao">
     <sql id="Base_Column_List">
 		id,
 		password,
@@ -11,7 +11,7 @@
 		level
 	</sql>
 
-    <select id="findByIdAndPassword" parameterType="String" resultType="com.bofa.payment.score.pojo.Agent">
+    <select id="findByIdAndPassword" parameterType="String" resultType="com.bofa.payment.scoreAPI.pojo.Agent">
         SELECT
         <include refid="Base_Column_List"/>
         FROM Agent
@@ -20,7 +20,7 @@
         and password = #{password}
     </select>
 
-    <select id="findAgents" parameterType="String" resultType="com.bofa.payment.score.pojo.Agent">
+    <select id="findAgents" parameterType="String" resultType="com.bofa.payment.scoreAPI.pojo.Agent">
         SELECT
         <include refid="Base_Column_List"/>
         FROM Agent
