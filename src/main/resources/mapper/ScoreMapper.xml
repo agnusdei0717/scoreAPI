@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bofa.payment.score.dao.ScoreMybatisDao">
+    <select id="getScoreByYearAndMonthAndAgent" parameterType="Integer" resultType="com.bofa.payment.score.pojo.Score">
+        select * from (
+            /**
+            支付新開發
+            **/
+            select
+            de.id
+            ,de.name as payName
+            ,'新增' as status1
+            ,'' as status2
+            ,'' as status3
+            ,'' as status4
+            ,de.end_date  as endDate
+            ,de.situation as situation
+            ,'1' as point
+            ,de.agent
+            from developement de where year = #{year} and month = #{month} and type = 1 and agent = #{agent}
+
+            union
+            /**
+            代付新開發
+            **/
+            select
+            de.id
+            ,CONCAT(de.name,'(出款)') as payName
+            ,'新增' as status1
+            ,'' as status2
+            ,'' as status3
+            ,'' as status4
+            ,de.end_date  as endDate
+            ,de.situation as situation
+            ,'1' as point
+            ,de.agent
+            from developement de where year = #{year} and month = #{month} and type = 2 and agent = #{agent}
+
+            union
+            /**
+            重構
+            **/
+            select
+            re.id
+            ,re.name as payName
+            ,'' as status1
+            ,'重構' as status2
+            ,'' as status3
+            ,'' as status4
+            ,re.end_date  as endDate
+            ,re.situation as situation
+            ,'1' as point
+            ,re.agent
+            from rebuild re where year = #{year} and month = #{month} and type = 2 and agent = #{agent}
+
+            union
+            /**
+            更新
+            **/
+            select
+            re.id
+            ,re.name as payName
+            ,'' as status1
+            ,'' as status2
+            ,'更新' as status3
+            ,'' as status4
+            ,re.end_date  as endDate
+            ,re.situation as situation
+            ,'0.34' as point
+            ,re.agent
+            from rebuild re where year = #{year} and month = #{month} and type = 1 and agent = #{agent}
+
+            union
+            /**
+            協助與問題處理
+            **/
+            select
+            q.id
+            ,q.name as payName
+            ,'' as status1
+            ,'' as status2
+            ,'' as status3
+            ,'協助' as status4
+            ,q.end_date  as endDate
+            ,q.situation as situation
+            ,'0.34' as point
+            ,q.agent
+            from question q where year = #{year} and month = #{month} and agent = #{agent}
+            ) score
+
+            union
+            /**
+            計算點數
+            **/
+            select
+             0
+            ,'總計:'
+            ,score1 + score2 + FLOOR((score3+score4)/3) as total
+            ,'點','','','','','',''
+            from (
+            (select count(*) as score1 from developement where year = #{year} and month = #{month} and agent = #{agent})as a
+            ,(select count(*) as score2 from rebuild where year = #{year} and month = #{month} and agent = #{agent} and type = 2) as b
+            ,(select count(*) as score3 from rebuild where year = #{year} and month = #{month} and agent = #{agent} and type = 1) as c
+            ,(select count(*) as score4 from question where year = #{year} and month = #{month} and agent = #{agent}) as d
+            );
+    </select>
+
+    <select id="getPoint" parameterType="Integer" resultType="com.bofa.payment.score.pojo.AgentPoint">
+        select
+            score1
+            ,score2
+            ,score3
+            ,score4
+            ,score1 + score2 + FLOOR((score3+score4)/3) as total
+            from (
+            (select count(*) as score1 from developement where year = #{year} and month = #{month} and agent = #{agent})as a
+            ,(select count(*) as score2 from rebuild where year = #{year} and month = #{month} and agent = #{agent} and type = 2) as b
+            ,(select count(*) as score3 from rebuild where year = #{year} and month = #{month} and agent = #{agent} and type = 1) as c
+            ,(select count(*) as score4 from question where year = #{year} and month = #{month} and agent = #{agent}) as d
+            );
+    </select>
+
+    <select id="getScoreByYearAndMonthForQA" parameterType="Integer" resultType="com.bofa.payment.score.pojo.Score">
+        select * from (
+                          /**
+                          支付新開發
+                          **/
+                          select
+                              de.id
+                               ,de.name as payName
+                               ,'新增' as status1
+                               ,'' as status2
+                               ,'' as status3
+                               ,'' as status4
+                               ,de.end_date  as endDate
+                               ,de.situation as situation
+                               ,'1' as point
+                               ,de.agent
+                          from developement de where year = #{year} and month = #{month} and type = 1
+
+                          union
+                          /**
+                          代付新開發
+                          **/
+                          select
+                              de.id
+                                  ,CONCAT(de.name,'(出款)') as payName
+                                  ,'新增' as status1
+                                  ,'' as status2
+                                  ,'' as status3
+                                  ,'' as status4
+                                  ,de.end_date  as endDate
+                                  ,de.situation as situation
+                                  ,'1' as point
+                                  ,de.agent
+                          from developement de where year = #{year} and month = #{month} and type = 2
+
+                          union
+                          /**
+                          重構
+                          **/
+                          select
+                              re.id
+                                  ,re.name as payName
+                                  ,'' as status1
+                                  ,'重構' as status2
+                                  ,'' as status3
+                                  ,'' as status4
+                                  ,re.end_date  as endDate
+                                  ,re.situation as situation
+                                  ,'1' as point
+                                  ,re.agent
+                          from rebuild re where year = #{year} and month = #{month} and type = 2
+
+                          union
+                          /**
+                          更新
+                          **/
+                          select
+                              re.id
+                                  ,re.name as payName
+                                  ,'' as status1
+                                  ,'' as status2
+                                  ,'更新' as status3
+                                  ,'' as status4
+                                  ,re.end_date  as endDate
+                                  ,re.situation as situation
+                                  ,'0.34' as point
+                                  ,re.agent
+                          from rebuild re where year = #{year} and month = #{month} and type = 1
+
+                          union
+                          /**
+                          協助與問題處理
+                          **/
+                          select
+                              q.id
+                                  ,q.name as payName
+                                  ,'' as status1
+                                  ,'' as status2
+                                  ,'' as status3
+                                  ,'協助' as status4
+                                  ,q.end_date  as endDate
+                                  ,q.situation as situation
+                                  ,'0.34' as point
+                                  ,q.agent
+                          from question q where year = #{year} and month = #{month}
+                      ) score
+
+        union
+        /**
+        計算點數
+        **/
+        select
+            0
+             ,'總計:'
+             ,FLOOR((score1 + score2 + FLOOR((score3+score4)/3))/3) as total
+             ,'點','','','','','',''
+        from (
+              (select count(*) as score1 from developement where year = #{year} and month = #{month})as a
+                 ,(select count(*) as score2 from rebuild where year = #{year} and month = #{month} and type = 2) as b
+                 ,(select count(*) as score3 from rebuild where year = #{year} and month = #{month} and type = 1) as c
+                 ,(select count(*) as score4 from question where year = #{year} and month = #{month}) as d
+                 );
+    </select>
+
+</mapper>

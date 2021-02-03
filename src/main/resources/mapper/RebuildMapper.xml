@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bofa.payment.score.dao.RebuildMyBatisDao">
+    <resultMap id="BaseResultMap" type="com.bofa.payment.score.pojo.Rebuild">
+        <id column="ID" jdbcType="INTEGER" property="id" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="RECEIVE_DATE" jdbcType="DATE" property="receiveDate" />
+        <result column="STATUS" jdbcType="INTEGER" property="status" />
+        <result column="AGENT" jdbcType="INTEGER" property="agent" />
+        <result column="SITUATION" jdbcType="VARCHAR" property="situation" />
+        <result column="END_DATE" jdbcType="DATE" property="endDate" />
+        <result column="UAT_RESULT" jdbcType="VARCHAR" property="uatResult" />
+        <result column="PRD_RESULT" jdbcType="VARCHAR" property="prdResult" />
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <result column="YEAR" jdbcType="VARCHAR" property="year" />
+        <result column="MONTH" jdbcType="VARCHAR" property="month" />
+        <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    </resultMap>
+
+    <select id="findByParameter" resultMap="BaseResultMap" >
+        SELECT
+        *
+        FROM
+          rebuild
+        WHERE
+          1 = 1
+        <if test="name != null and name !='' ">
+          and name like #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="year != null and year !='' ">
+          and year = #{year,jdbcType=VARCHAR}
+        </if>
+        <if test="month != null and month !='' ">
+            and month = #{month,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null and status !='' ">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="agent != null and agent !='' ">
+            and agent = #{agent,jdbcType=INTEGER}
+        </if>
+        <if test="receiveDate != null and receiveDate !='' ">
+            and receive_date &gt;= #{receiveDate,jdbcType=DATE}
+        </if>
+        <if test="endDate != null and endDate !='' ">
+            and end_date &lt;= #{endDate,jdbcType=DATE}
+        </if>
+    </select>
+
+
+</mapper>
