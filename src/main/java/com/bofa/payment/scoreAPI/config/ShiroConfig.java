@@ -33,6 +33,7 @@ public class ShiroConfig {
         Map<String, String> filterMap = new HashMap<>();
         //设置/user/login不需要登录就能访问
         filterMap.put("/login", "anon");
+        filterMap.put("/addAgent", "anon");
         //设置/user/list需要登录用户拥有角色user时才能访问
         filterMap.put("/list", "roles[user]");
         //其他路径则需要登录才能访问

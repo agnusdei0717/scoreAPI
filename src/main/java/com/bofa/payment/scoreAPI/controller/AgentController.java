@@ -5,6 +5,7 @@ import com.bofa.payment.scoreAPI.pojo.ResultJSONObj;
 import com.bofa.payment.scoreAPI.service.AgentSerivce;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -44,22 +45,13 @@ public class AgentController {
         return result.toString();
     }
 
-    @RequestMapping("/agent")
-    public String index() {
-        return "query/agent";
-    }
-
     @RequestMapping("/agent/query")
-    public ModelAndView query(@RequestParam String ename) {
+    public String query(@RequestParam String ename) {
         Agent agent = new Agent();
         agent.setEname(ename);
-
-        ModelAndView mv = new ModelAndView("query/agent");
-        mv.addObject("display", true);
-        mv.addObject("ename", ename);
-        mv.addObject("dataList", agentService.findAgents(agent));
-
-        return mv;
+        ResultJSONObj result = new ResultJSONObj();
+        result.setResult(true).setMsg("查詢成功").addData("result",agentService.findAgents(agent));
+        return result.toString();
     }
 
     @RequestMapping("/agent/remove/{id}")
