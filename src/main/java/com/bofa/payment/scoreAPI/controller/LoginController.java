@@ -13,13 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
-import java.util.List;
 
 @Controller
+@ResponseBody
 public class LoginController {
     private Log log = LogFactory.getLog(LoginController.class);
 
@@ -27,7 +24,6 @@ public class LoginController {
     LoginService loginService;
 
     @RequestMapping("/login")
-    @ResponseBody
     public String login(@RequestParam("id") String loginID,
                               @RequestParam("password") String password, HttpServletRequest req){
 
@@ -41,7 +37,8 @@ public class LoginController {
             try {
                 //登录，进行密码比对，登录失败时将会抛出对应异常
                 currentUser.login(usernamePasswordToken);
-                result.setResult(true).setMsg("登錄成功").setData(((Agent)currentUser.getSession().getAttribute("agent")).toString());
+                result.setResult(true).setMsg("登錄成功");
+                result.addData("agent",((Agent)currentUser.getSession().getAttribute("agent")).toString());
             } catch (UnknownAccountException uae) {
                 result.setMsg("用户名不存在");
             } catch (IncorrectCredentialsException ice) {
@@ -56,7 +53,6 @@ public class LoginController {
             result.setMsg("您已经登录成功了");
         }
 
-        log.info("result:"+result);
         return result.toString();
     }
 

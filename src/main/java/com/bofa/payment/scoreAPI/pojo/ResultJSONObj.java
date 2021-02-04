@@ -2,14 +2,13 @@ package com.bofa.payment.scoreAPI.pojo;
 
 
 import com.bofa.payment.scoreAPI.utils.ObjTransJsonUtil;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-
+import net.sf.json.JSONObject;
 public class ResultJSONObj {
 
     private boolean result = false;
     private String status;
     private String msg;
-    private String data;
+    private JSONObject data = new JSONObject();
 
     public boolean isResult() {
         return result;
@@ -38,14 +37,31 @@ public class ResultJSONObj {
         return this;
     }
 
-    public String getData() {
+    public JSONObject getData() {
         return data;
     }
 
-    public ResultJSONObj setData(String data) {
+    public ResultJSONObj setData(JSONObject data) {
         this.data = data;
         return this;
     }
+
+    public ResultJSONObj addData(String key, Object value){
+        try{
+            JSONObject json = JSONObject.fromObject(value);
+            this.data.put(key,json);
+        }catch(Exception e){
+            this.data.put(key,value);
+        }
+        return  this;
+    }
+
+    public ResultJSONObj removeData(String key){
+        this.data.remove(key);
+        return  this;
+    }
+
+
 
     @Override
     public String toString(){
