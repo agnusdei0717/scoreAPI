@@ -1,7 +1,11 @@
 package com.bofa.payment.scoreAPI.shiro;
 
+import com.bofa.payment.scoreAPI.controller.LoginController;
 import com.bofa.payment.scoreAPI.pojo.Agent;
 import com.bofa.payment.scoreAPI.service.LoginService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -11,9 +15,12 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.security.auth.Subject;
 import java.util.*;
 
 public class MyRealm extends AuthorizingRealm {
+
+    private Log log = LogFactory.getLog(MyRealm.class);
 
     @Autowired
     LoginService loginService;
@@ -44,7 +51,8 @@ public class MyRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
 
         String username = token.getUsername();
-        Map<String, Object> userInfo = getUserInfo(username);
+        String password = new String(token.getPassword());
+        Map<String, Object> userInfo = getUserInfo(username,password);
         if (userInfo == null) {
             throw new UnknownAccountException();
         }
@@ -62,19 +70,17 @@ public class MyRealm extends AuthorizingRealm {
      * @param username
      * @return
      */
-    private Map<String, Object> getUserInfo(String username) {
-//        Agent agent = loginService.findByIdAndPassword(username,password);
+    private Map<String, Object> getUserInfo(String username, String password) {
+        Agent agent = loginService.findByIdAndPassword(username,password);
         Map<String, Object> userInfo = null;
-        if ("gimin".equals(username)) {
+        if (agent != null) {
             userInfo = new HashMap<>();
-            userInfo.put("username", "gimin");
+            userInfo.put("username", agent.getId());
 
             //加密算法，原密码，盐值，加密次数
-            userInfo.put("password", new SimpleHash("MD5", "123456", username, 3));
+            userInfo.put("password", new SimpleHash("MD5", agent.getPassword(), username, 3));
+            SecurityUtils.getSubject().getSession().setAttribute("agent",agent);
         }
-
-
-
         return userInfo;
     }
 
