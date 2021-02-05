@@ -1,6 +1,6 @@
 package com.bofa.payment.scoreAPI.config;
 
-import com.bofa.payment.scoreAPI.shiro.MyRealm;
+import com.bofa.payment.scoreAPI.security.MyRealm;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

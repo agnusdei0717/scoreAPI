@@ -1,8 +1,13 @@
-package com.bofa.payment.scoreAPI.pojo;
+package com.bofa.payment.scoreAPI.Component;
 
 
 import com.bofa.payment.scoreAPI.utils.ObjTransJsonUtil;
 import net.sf.json.JSONObject;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope(value = "prototype")
 public class ResultJSONObj {
 
     private boolean result = false;

@@ -1,11 +1,10 @@
 package com.bofa.payment.scoreAPI.controller;
 
 import com.bofa.payment.scoreAPI.pojo.Agent;
-import com.bofa.payment.scoreAPI.pojo.ResultJSONObj;
+import com.bofa.payment.scoreAPI.Component.ResultJSONObj;
 import com.bofa.payment.scoreAPI.service.AgentSerivce;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +20,11 @@ import java.util.List;
 public class AgentController {
 
     private Log log = LogFactory.getLog(AgentController.class);
-
     @Autowired
     AgentSerivce agentService;
+
+    @Autowired
+    ResultJSONObj resultJson;
 
     @RequestMapping("/addAgent")
     public String add(@RequestParam("cname") String cname
@@ -32,59 +33,45 @@ public class AgentController {
             , @RequestParam("password2") String password2
             , @RequestParam("level") Integer level) {
 
-            ResultJSONObj result = new ResultJSONObj();
         try {
             if(!password.equals(password2))
                 throw new Exception("密碼比對不相同");
             agentService.addAgent(cname, ename, password, level);
-            result.setResult(true).setMsg("新增使用者成功");
+            resultJson.setResult(true).setMsg("新增使用者成功");
         } catch (Exception e) {
-            result.setMsg(e.getMessage());
+            resultJson.setMsg(e.getMessage());
             log.info(e.toString());
         }
-        return result.toString();
+        return resultJson.toString();
     }
 
     @RequestMapping("/agent/query")
     public String query(@RequestParam String ename) {
         Agent agent = new Agent();
         agent.setEname(ename);
-        ResultJSONObj result = new ResultJSONObj();
-        result.setResult(true).setMsg("查詢成功").addData("result",agentService.findAgents(agent));
-        return result.toString();
+        resultJson.setResult(true).setMsg("查詢成功").addData("result",agentService.findAgents(agent));
+        return resultJson.toString();
     }
 
     @RequestMapping("/agent/remove/{id}")
-    public void remove(@PathVariable Integer id, @RequestParam String ename, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+    public String remove(@PathVariable Integer id) throws IOException {
         agentService.deleteAgent(id);
-
-        response.sendRedirect(String.format("%s%s?ename=%s", request.getContextPath(), "/agent/query", ename));
+        resultJson.setResult(true).setMsg("刪除成功");
+        return resultJson.toString();
     }
 
     @RequestMapping("/agent/edit/{id}")
-    public ModelAndView edit(@PathVariable Integer id) {
+    public String edit(@PathVariable Integer id) {
         Agent agent = new Agent();
         agent.setId(id);
-
-        List<Agent> agents = agentService.findAgents(agent);
-
-        ModelAndView mv = new ModelAndView("edit/agent");
-        mv.addObject("agent", agents.get(0));
-
-        return mv;
+        resultJson.setResult(true).addData("agent",agentService.findAgents(agent).get(0));
+        return resultJson.toString();
 
     }
 
     @RequestMapping("/agent/save")
-    public void save(@ModelAttribute Agent agent, HttpServletRequest req, HttpServletResponse res) {
-
-        agent = agentService.saveAgent(agent);
-
-        try {
-            res.sendRedirect(req.getContextPath() + "/agent/query?ename=" + agent.getEname());
-        } catch (IOException e) {
-            log.info(e.toString());
-        }
+    public String save(@RequestBody Agent agent) {
+        resultJson.setResult(true).setMsg("儲存成功").addData("agent",agentService.saveAgent(agent));
+        return resultJson.toString();
     }
 }

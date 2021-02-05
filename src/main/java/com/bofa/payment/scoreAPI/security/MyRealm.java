@@ -1,6 +1,5 @@
-package com.bofa.payment.scoreAPI.shiro;
+package com.bofa.payment.scoreAPI.security;
 
-import com.bofa.payment.scoreAPI.controller.LoginController;
 import com.bofa.payment.scoreAPI.pojo.Agent;
 import com.bofa.payment.scoreAPI.service.LoginService;
 import org.apache.commons.logging.Log;
@@ -15,7 +14,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.security.auth.Subject;
 import java.util.*;
 
 public class MyRealm extends AuthorizingRealm {
