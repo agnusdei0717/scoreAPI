@@ -18,24 +18,10 @@ public class DeleteController {
     private Log log = LogFactory.getLog(EditController.class);
 
     @Autowired
-    DevelopementService developementService;
-
-    @Autowired
     QuestionService questionService;
 
     @Autowired
     RebuildService rebuildService;
-
-    @RequestMapping("developement")
-    @ResponseBody
-    public String deleteDevelopement(@RequestParam("id") Integer Id){
-        try {
-            developementService.delById(Id);
-            return "{\"process_status\":\"成功\"}";
-        }catch (Exception e){
-            return "{\"process_status\":\"失敗\"}";
-        }
-    }
 
     @RequestMapping("question")
     @ResponseBody

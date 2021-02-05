@@ -10,17 +10,17 @@ import org.springframework.stereotype.Component;
 @Scope(value = "prototype")
 public class ResultJSONObj {
 
-    private boolean result = false;
+    private boolean success = false;
     private String status;
     private String msg;
     private JSONObject data = new JSONObject();
 
-    public boolean isResult() {
-        return result;
+    public boolean isSuccess() {
+        return success;
     }
 
-    public ResultJSONObj setResult(boolean result) {
-        this.result = result;
+    public ResultJSONObj setSuccess(boolean success) {
+        this.success = success;
         return this;
     }
 

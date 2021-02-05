@@ -22,13 +22,18 @@ public class DevelopementServiceImpl implements DevelopementService {
 
 
     @Override
-    public void addDevelopement(String name, String receiveDate, Integer status, Integer agent, String situation
+    public Developement addDevelopement(String name, String receiveDate, Integer status, Integer agent, String situation
                         , String endDate, String uatResult, String prdResult, String remark, String year, String month
                         , Integer type) {
 
         Developement de = new Developement(name, DateUtil.parseStringToDate(receiveDate), status, agent, situation
                 , DateUtil.parseStringToDate(endDate), uatResult, prdResult, remark, year, month, type);
-        developementRepository.save(de);
+        return developementRepository.save(de);
+    }
+
+    @Override
+    public Developement addDevelopement(Developement developement) {
+        return developementRepository.save(developement);
     }
 
     @Override
@@ -38,6 +43,11 @@ public class DevelopementServiceImpl implements DevelopementService {
         Developement de = new Developement(Id, name, DateUtil.parseStringToDate(receiveDate), status, agent, situation
                 , DateUtil.parseStringToDate(endDate), uatResult, prdResult, remark, year, month, type);
         return developementRepository.save(de);
+    }
+
+    @Override
+    public Developement updateDevelopement(Developement developement) {
+        return developementRepository.save(developement);
     }
 
     @Override

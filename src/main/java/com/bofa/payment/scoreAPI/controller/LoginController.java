@@ -39,7 +39,7 @@ public class LoginController {
             try {
                 //登录，进行密码比对，登录失败时将会抛出对应异常
                 currentUser.login(usernamePasswordToken);
-                resultJson.setResult(true).setMsg("登錄成功");
+                resultJson.setSuccess(true).setMsg("登錄成功");
                 resultJson.addData("agent",((Agent)currentUser.getSession().getAttribute("agent")).toString());
             } catch (UnknownAccountException uae) {
                 resultJson.setMsg("用户名不存在");
@@ -51,7 +51,7 @@ public class LoginController {
                 resultJson.setMsg("登录失败，请与管理员联系");
             }
         } else {
-            resultJson.setResult(true);
+            resultJson.setSuccess(true);
             resultJson.setMsg("您已经登录成功了");
         }
 
