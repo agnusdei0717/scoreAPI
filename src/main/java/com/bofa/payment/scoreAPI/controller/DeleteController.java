@@ -18,21 +18,7 @@ public class DeleteController {
     private Log log = LogFactory.getLog(EditController.class);
 
     @Autowired
-    QuestionService questionService;
-
-    @Autowired
     RebuildService rebuildService;
-
-    @RequestMapping("question")
-    @ResponseBody
-    public String deleteQuestion(@RequestParam("id") Integer Id){
-        try{
-            questionService.delById(Id);
-            return "{\"process_status\":\"成功\"}";
-        }catch (Exception e){
-            return "{\"process_status\":\"失敗\"}";
-        }
-    }
 
     @RequestMapping("rebuild")
     @ResponseBody

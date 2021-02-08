@@ -19,17 +19,27 @@ public class QuestionServiceImpl implements QuestionService {
     QuestionRepository questionRepository;
 
     @Override
-    public void addQuestion(String name, String receiveDate, Integer status, Integer agent, String situation
+    public Question addQuestion(String name, String receiveDate, Integer status, Integer agent, String situation
             , String endDate, String remark, String year, String month) {
         Question qu = new Question(name, DateUtil.parseStringToDate(receiveDate), status, agent, situation
                 , DateUtil.parseStringToDate(endDate), remark, year, month);
-        questionRepository.save(qu);
+        return questionRepository.save(qu);
+    }
+
+    @Override
+    public Question addQuestion(Question qu) {
+        return questionRepository.save(qu);
     }
 
     @Override
     public Question updateQuestion(Integer Id, String name, String receiveDate, Integer status, Integer agent, String situation, String endDate, String remark, String year, String month) {
         Question qu = new Question(Id, name, DateUtil.parseStringToDate(receiveDate), status, agent, situation
                 , DateUtil.parseStringToDate(endDate), remark, year, month);
+        return questionRepository.save(qu);
+    }
+
+    @Override
+    public Question updateQuestion(Question qu) {
         return questionRepository.save(qu);
     }
 

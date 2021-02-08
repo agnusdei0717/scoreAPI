@@ -70,7 +70,6 @@ public class DevelopementController {
 
     @RequestMapping("/query/developement/{id}")
     public String query(@PathVariable Integer id){
-        developementService.findById(id);
         resultJson.setSuccess(true).setMsg("查詢成功").addData("developement",developementService.findById(id));
         return resultJson.toString();
     }
