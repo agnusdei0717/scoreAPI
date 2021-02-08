@@ -61,14 +61,14 @@ public class DevelopementController {
         return resultJson.toString();
     }
 
-    @RequestMapping("/delete/developement/{id}")
+    @RequestMapping("/delete/Developement/{id}")
     public String delete(@PathVariable Integer id){
         developementService.delById(id);
         resultJson.setSuccess(true).setMsg("刪除成功");
         return resultJson.toString();
     }
 
-    @RequestMapping("/query/developement/{id}")
+    @RequestMapping("/query/Developement/{id}")
     public String query(@PathVariable Integer id){
         resultJson.setSuccess(true).setMsg("查詢成功").addData("developement",developementService.findById(id));
         return resultJson.toString();

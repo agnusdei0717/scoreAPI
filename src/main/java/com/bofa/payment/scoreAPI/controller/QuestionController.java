@@ -51,14 +51,14 @@ public class QuestionController {
         return resultJson.toString();
     }
 
-    @RequestMapping("/delete/question/{id}")
+    @RequestMapping("/delete/Question/{id}")
     public String delete(@PathVariable Integer id){
         questionService.delById(id);
         resultJson.setSuccess(true).setMsg("刪除成功");
         return resultJson.toString();
     }
 
-    @RequestMapping("/query/question/{id}")
+    @RequestMapping("/query/Question/{id}")
     public String query(@PathVariable Integer id){
         resultJson.setSuccess(true).setMsg("查詢成功").addData("question",questionService.findById(id));
         return resultJson.toString();

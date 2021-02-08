@@ -20,12 +20,17 @@ public class RebuildServiceImpl implements RebuildService {
     RebuildRepository rebuildRepository;
 
     @Override
-    public void addRebuild(String name, String receiveDate, Integer status, Integer agent, String situation
+    public Rebuild addRebuild(String name, String receiveDate, Integer status, Integer agent, String situation
             , String endDate, String uatResult, String prdResult, String remark, String year, String month
             , Integer type) {
         Rebuild re = new Rebuild(name, DateUtil.parseStringToDate(receiveDate), status, agent, situation
                 , DateUtil.parseStringToDate(endDate), uatResult, prdResult, remark, year, month, type);
-        rebuildRepository.save(re);
+        return rebuildRepository.save(re);
+    }
+
+    @Override
+    public Rebuild addRebuild(Rebuild rebuild) {
+        return rebuildRepository.save(rebuild);
     }
 
     @Override
@@ -34,6 +39,11 @@ public class RebuildServiceImpl implements RebuildService {
                 , DateUtil.parseStringToDate(endDate), uatResult, prdResult, remark, year, month, type);
         rebuildRepository.save(re);
         return rebuildRepository.save(re);
+    }
+
+    @Override
+    public Rebuild updateRebuild(Rebuild rebuild) {
+        return rebuildRepository.save(rebuild);
     }
 
     @Override
